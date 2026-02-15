@@ -2,15 +2,15 @@
 
 <h3>Table of Contents</h3>
 
-- [`InstaClient`](#instaclient): Initializes the session and handles transport selection (Requests or CURL)
-  - [`get_profile_info()`](#get_profile_info): Scrapes profile metadata and returns a structured ProfileData object.
-  - [`get_feed()`](#get_feed): Retrieves user timeline posts with built-in pagination support.
-  - [`get_comments()`](#get_comments): Fetches media comments and automates cursor-based pagination.
-- [Raw Responses Examples](#raw-responses-examples)
+- [`InstaClient`](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#instaclient): Initializes the session and handles transport selection (Requests or CURL)
+  - [`get_profile_info()`](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_profile_info): Scrapes profile metadata and returns a structured ProfileData object.
+  - [`get_feed()`](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_feed): Retrieves user timeline posts with built-in pagination support.
+  - [`get_comments()`](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_comments): Fetches media comments and automates cursor-based pagination.
+- [Raw Responses Examples](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#raw-responses-examples)
 
 > [!NOTE]
 > You will need to fill in the parameters for the request. See here how to get them
-> - [**How to obtain the parameters to make the request**](HOT_TO.md)
+> - [**How to obtain the parameters to make the request**](https://github.com/lucasoal/igmapper/blob/main/doc/HOT_TO.md)
 
 <hr>
 

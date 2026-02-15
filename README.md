@@ -35,10 +35,10 @@ transport, ensuring resilience against environment constraints.
 ## Main Features
 Here are just a few of the things that pandas does well:
 
-- [`InstaClient`](doc/DOCUMENTATION.md#instaclient): Initializes the session and handles transport selection (Requests or CURL)
-  - [`get_profile_info()`](doc/DOCUMENTATION.md#get_profile_info): Scrapes profile metadata and returns a structured ProfileData object.
-  - [`get_feed()`](doc/DOCUMENTATION.md#get_feed): Retrieves user timeline posts with built-in pagination support.
-  - [`get_comments()`](doc/DOCUMENTATION.md#get_comments): Fetches media comments and automates cursor-based pagination.
+- [`InstaClient`](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#instaclient): Initializes the session and handles transport selection (Requests or CURL)
+  - [`get_profile_info()`](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_profile_info): Scrapes profile metadata and returns a structured ProfileData object.
+  - [`get_feed()`](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_feed): Retrieves user timeline posts with built-in pagination support.
+  - [`get_comments()`](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_comments): Fetches media comments and automates cursor-based pagination.
 
 ## Where to get it / Install
 The source code is currently hosted on GitHub at: https://github.com/lucasoal/igmapper

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "igmapper"
-version = "1.0.0"
+version = "1.0.1"
 description = "Unofficial Instagram API to request available data"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -15,7 +15,7 @@ authors = [
 ]
 
 keywords = [
-  "instagram", "unofficial-api", "igmapper",
+   "igmapper", "instagram", "unofficial-api",
 ]
 
 classifiers = [
@@ -27,7 +27,7 @@ classifiers = [
 ]
 
 dependencies = [
-  "requests", "json", "urllib","typing", "pydantic",
+  "requests", "pydantic",
 ]
 
 [project.urls]
