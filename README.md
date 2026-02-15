@@ -70,7 +70,7 @@ The source code is currently hosted on GitHub at: https://github.com/lucasoal/ig
 - [MIT 🡽](https://github.com/lucasoal/igmapper/blob/main/LICENSE)
 
 ## Dependencies
-- Requests
+- [Requests](https://pypi.org/project/requests/) | [pydantic](https://pypi.org/project/pydantic/)
 
 See the [full installation instructions](https://github.com/lucasoal/igmapper/blob/main/INSTALLATION.md) for minimum supported versions of required, recommended and optional dependencies.
 
