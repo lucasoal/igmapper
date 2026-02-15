@@ -1,6 +1,6 @@
 # HOW TO CONFIGURE
 
-> ### To configure `InstaClient`, you will need to extract the authentication cookies directly from your browser.*
+### To configure `InstaClient`, you will need to extract the authentication cookies directly from your browser.*
 
 <hr>
 
