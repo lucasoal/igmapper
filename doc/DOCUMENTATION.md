@@ -14,7 +14,7 @@
 This **class** provides the core engine for authentication and request transport.
 
 > [!IMPORTANT]
-> You will need to fill in the parameters for the request. See here how to get them
+> You will need to fill in the parameters for the request. See here how to get them:
 > - [**❗How to obtain the parameters to make the request**](https://github.com/lucasoal/igmapper/blob/main/doc/HOT_TO.md)
 
 ```py
@@ -28,6 +28,12 @@ client = InstaClient(
     use_curl=True,
 )
 ```
+
+> For public information, use only the `csrftoken` obtained without needing to log in, leaving the other fields as "`None`". For information that requires login (such as on the website/app), fill in all authentication fields.
+> 
+> Optional:
+> - `proxy`: Use this option to make the request through a specific proxy.
+> - `use_curl`: Set to True or False to choose whether the request will be made with `CURL` or via `Requests`.
 
 <hr>
 
