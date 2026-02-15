@@ -6,7 +6,7 @@
 	</picture>
 	<br><br><br>
 	<hr>
-<h1>igmapper: An Instagram Unofficial API</h1>
+<h1>Igmapper: An Instagram Unofficial API</h1>
 
 <img src="https://img.shields.io/badge/Author-lucasoal-blue?logo=github&logoColor=white"> <img src="https://img.shields.io/badge/License-MIT-750014.svg"> <!-- <img src="https://img.shields.io/badge/Status-Beta-DF1F72">  -->
 <br>
@@ -18,7 +18,7 @@
 </div>
 
 ## What is it?
-**igmapper** is a high-performance Python library designed for Instagram data extraction, 
+**Igmapper** is a high-performance Python library designed for Instagram data extraction, 
 providing structured access to profiles, feeds, and comments. It offers a flexible
 architecture that allows data engineers to toggle between Requests and native CURL
 transport, ensuring resilience against environment constraints.
