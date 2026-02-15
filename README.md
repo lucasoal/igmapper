@@ -1,6 +1,6 @@
 <div align="center">
 	<picture>
-	<source media="(prefers-color-scheme: dark)" srcset="assets/igmapper_white.svg">
+	<source media="(prefers-color-scheme: dark)" srcset="assets/igmapper.svg">
 	<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/igmapper.svg">
 		<img src="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/igmapper.svg" width="100%">
 	</picture>
