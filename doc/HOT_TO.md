@@ -23,15 +23,15 @@
 
 <hr>
 
-### Replace with the values ​​collected in steps 7 and 8
+### Replace with the values ​​collected in steps 6, 7 and 8
 
 ```py
 from igmapper.client import InstaClient
 
 client = InstaClient(
-    csrftoken="value_from_step_7",
-    ds_user_id="value_from_step_8",
-    sessionid="value_from_step_7"
+    csrftoken="value_from_step_6",
+    ds_user_id="value_from_step_7",
+    sessionid="value_from_step_8"
 )
 ```
 
