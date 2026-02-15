@@ -8,14 +8,14 @@
   - [`get_comments()`](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_comments): Fetches media comments and automates cursor-based pagination.
 - [Raw Responses Examples](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#raw-responses-examples)
 
-> [!NOTE]
-> You will need to fill in the parameters for the request. See here how to get them
-> - [**How to obtain the parameters to make the request**](https://github.com/lucasoal/igmapper/blob/main/doc/HOT_TO.md)
-
 <hr>
 
 ### *InstaClient*
 This **class** provides the core engine for authentication and request transport.
+
+> [!IMPORTANT]
+> You will need to fill in the parameters for the request. See here how to get them
+> - [**❗How to obtain the parameters to make the request**](https://github.com/lucasoal/igmapper/blob/main/doc/HOT_TO.md)
 
 ```py
 from igmapper import InstaClient
