@@ -209,3 +209,50 @@ class CommentsData(BaseModel):
             num_results=data.get("num_results"),
             more_available=data.get("more_available"),
         )
+
+
+class FriendshipData(BaseModel):
+    # Dados do Usuário (Item)
+    user_id: Optional[str] = Field(default=None, alias="pk")
+    username: Optional[str] = None
+    full_name: Optional[str] = None
+    profile_pic_url: Optional[HttpUrl] = None
+    is_private: Optional[bool] = None
+    is_verified: Optional[bool] = None
+    pk_id: Optional[str] = None
+    latest_reel_media: Optional[int] = None
+
+    # Dados da Listagem (Response)
+    users: Optional[List["FriendshipData"]] = None
+    next_max_id: Optional[str] = None
+    num_results: Optional[int] = None
+    more_available: Optional[bool] = None
+
+    @classmethod
+    def parse_item(cls, item: dict):
+        """Mapeia um único usuário da lista."""
+        return cls(
+            pk=str(item.get("pk")),
+            username=item.get("username"),
+            full_name=item.get("full_name"),
+            profile_pic_url=item.get("profile_pic_url"),
+            is_private=item.get("is_private"),
+            is_verified=item.get("is_verified"),
+            pk_id=str(item.get("pk_id")),
+            latest_reel_media=item.get("latest_reel_media")
+        )
+
+    @classmethod
+    def parse_response(cls, data: dict):
+        """Mapeia a resposta completa da API (Followers ou Following)."""
+        users_raw = data.get("users", [])
+        
+        # O Instagram usa next_max_id para paginação nestes endpoints
+        next_id = data.get("next_max_id")
+
+        return cls(
+            users=[cls.parse_item(item) for item in users_raw],
+            next_max_id=next_id,
+            num_results=len(users_raw),
+            more_available=bool(next_id),
+        )
