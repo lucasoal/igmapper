@@ -6,7 +6,7 @@
 	</picture>
 	<br><br><br>
 	<hr>
-<h1>Igmapper: An Instagram Unofficial API</h1>
+<h1>Igmapper: an Instagram Unofficial API</h1>
 
 <img src="https://img.shields.io/badge/Author-lucasoal-blue?logo=github&logoColor=white"> <img src="https://img.shields.io/badge/License-MIT-750014.svg"> <!-- <img src="https://img.shields.io/badge/Status-Beta-DF1F72">  -->
 <br>
