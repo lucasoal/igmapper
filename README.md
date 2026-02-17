@@ -12,7 +12,8 @@
 <br>
 <img src="https://img.shields.io/pypi/v/igmapper.svg?label=Version&color=white"> <img src="https://img.shields.io/pypi/pyversions/igmapper?logo=python&logoColor=white&label=Python"> <img src="https://img.shields.io/badge/Code Style-Black Formatter-111.svg"> 
 <br>
-<img src="https://static.pepy.tech/badge/igmapper">
+<img src="https://img.shields.io/pypi/dm/igmapper.svg?label=PyPI downloads&color=white">
+
 <!-- <img src="https://img.shields.io/pypi/dm/igmapper.svg?label=PyPI Downloads"> -->
 
 </div>
