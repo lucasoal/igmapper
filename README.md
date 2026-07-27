@@ -1,8 +1,8 @@
 <div align="center">
 	<picture>
 	<source media="(prefers-color-scheme: dark)" srcset="assets/igmapper.svg">
-	<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/igmapper.svg">
-		<img src="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/igmapper.svg" width="100%">
+	<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/igmapper.png">
+		<img src="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/igmapper.png" width="100%">
 	</picture>
 	<br><br><br>
 	<hr>
@@ -12,7 +12,7 @@
 <br>
 <img src="https://img.shields.io/pypi/v/igmapper.svg?label=Version&color=white"> <img src="https://img.shields.io/pypi/pyversions/igmapper?logo=python&logoColor=white&label=Python"> <img src="https://img.shields.io/badge/Code Style-Black Formatter-111.svg"> 
 <br>
-<img src="https://img.shields.io/pypi/dm/igmapper.svg?label=PyPI downloads&color=white">
+<img src="https://static.pepy.tech/badge/igmapper/month">
 </div>
 
 ## What is it?
