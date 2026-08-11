@@ -1,2 +1,2 @@
-python3.10 -m build
-python3.10 -m twine upload dist/*
+python3 -m build
+python3 -m twine upload dist/* --verbose

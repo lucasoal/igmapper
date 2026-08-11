@@ -31,9 +31,12 @@ transport, ensuring resilience against environment constraints.
 - [Dependencies](#dependencies)
 
 ## Main Features
-Here are just a few of the things that pandas does well:
+Here are just a few of the things that igmapper does well:
 
-<img width="70%" style="display: block; margin: auto" src="assets/banner.png" >
+<div align="center">
+	<img width="70%" src="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/banner.png" >
+</div>
+
 <br>
 
 - [**`InstaClient`**](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#instaclient): Initializes the session and handles transport selection (Requests or CURL)
@@ -41,10 +44,10 @@ Here are just a few of the things that pandas does well:
   - [**`get_feed()`**](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_feed): Retrieves user timeline posts with built-in pagination support.
   - [**`get_comments()`**](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_comments): Fetches media comments and automates cursor-based pagination.
 
-<div style="text-align: center;">
-    <img width="49%" src="assets/get_profile_info.png">
-	<img width="49%" src="assets/get_feed.png">
-	<img width="49%" src="assets/get_comments.png">
+<div align="center">
+    <img width="49%" src="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/get_profile_info.png">
+	<img width="49%" src="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/get_feed.png">
+	<img width="49%" src="https://raw.githubusercontent.com/lucasoal/igmapper/refs/heads/main/assets/get_comments.png">
 </div>
 
 ## Where to get it / Install
