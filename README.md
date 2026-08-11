@@ -42,11 +42,9 @@ Here are just a few of the things that pandas does well:
   - [**`get_comments()`**](https://github.com/lucasoal/igmapper/blob/main/doc/DOCUMENTATION.md#get_comments): Fetches media comments and automates cursor-based pagination.
 
 <div style="text-align: center;">
-    <img width="70%" src="assets/print2.jpg">
-    <div style="display: flex; justify-content: center; gap: 10px;">
-        <img width="49%" src="assets/print3.jpg">
-        <img width="49%" src="assets/print4.jpg">
-    </div>
+    <img width="49%" src="assets/get_profile_info.png">
+	<img width="49%" src="assets/get_feed.png">
+	<img width="49%" src="assets/get_comments.png">
 </div>
 
 ## Where to get it / Install
