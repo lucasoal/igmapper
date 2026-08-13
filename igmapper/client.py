@@ -8,24 +8,23 @@ from .session import InstagramSession
 
 class InstaClient:
     def __init__(self, csrftoken, ds_user_id, sessionid, proxy=None, use_curl=False):
-        """
-        :param use_curl: Se True, utiliza chamadas via subprocess CURL em vez de requests.
-        """
         self.state = InstagramSession(csrftoken, ds_user_id, sessionid, proxy=proxy)
         self.use_curl = use_curl
 
-    def _execute_request(self, method, url, params=None):
-        """Gerencia se a requisição será via Requests ou CURL."""
+    def _execute_request(self, method, url, params=None, data=None, extra_headers=None):
+        headers = {}
+        if extra_headers:
+            headers.update(extra_headers)
+
         if params:
             url = f"{url}?{urllib.parse.urlencode(params)}"
 
         if not self.use_curl:
-            return self.state.request_on_session(method, url)
+            return self.state.request_on_session(method, url, data=data, headers=headers if headers else None)
 
-        return self._curl_request(method, url)
+        return self._curl_request(method, url, data=data, extra_headers=headers)
 
-    def _curl_request(self, method, url):
-        """Simula o comportamento do requests utilizando o binário curl do sistema."""
+    def _curl_request(self, method, url, data=None, extra_headers=None):
         cookie_str = (
             f"csrftoken={self.state.session.cookies.get('csrftoken')}; "
             f"ds_user_id={self.state.session.cookies.get('ds_user_id')}; "
@@ -41,8 +40,18 @@ class InstaClient:
             f"cookie: {cookie_str}",
             "-H",
             f"x-ig-app-id: {self.state.xigappid}",
+            "-H",
+            f"x-csrftoken: {self.state.session.cookies.get('csrftoken')}",
             "-sS",
         ]
+
+        if extra_headers:
+            for k, v in extra_headers.items():
+                command.extend(["-H", f"{k}: {v}"])
+
+        if data:
+            body = urllib.parse.urlencode(data) if isinstance(data, dict) else str(data)
+            command.extend(["--data-raw", body])
 
         if self.state.session.proxies.get("https"):
             command.extend(["-x", self.state.session.proxies["https"]])
@@ -55,24 +64,32 @@ class InstaClient:
                 self.status_code = status_code
 
             def json(self):
-                return json.loads(self.text)
+                try:
+                    return json.loads(self.text)
+                except Exception:
+                    return {}
 
         status = 200 if result.returncode == 0 else 500
         return MockResponse(result.stdout, status)
 
     def get_profile_info(self, username: str, return_raw: bool = False):
-        url = f"https://www.instagram.com/api/v1/users/web_profile_info/"
-        params = {"username": username}
-        response = self._execute_request("GET", url, params=params)
+        url = "https://www.instagram.com/api/v1/users/web_profile_info/"
+        res = self._execute_request("GET", url, params={"username": username})
 
-        if response.status_code != 200:
-            return None
+        if res.status_code == 200:
+            data = res.json()
+            if data.get("status") != "fail" and data.get("data", {}).get("user"):
+                return data if return_raw else ProfileData.parse_instagram_json(data)
 
-        data = response.json()
-        if return_raw:
-            return data
+        feed_url = f"https://www.instagram.com/api/v1/feed/user/{username}/username/"
+        feed_res = self._execute_request("GET", feed_url, params={"count": 1})
 
-        return ProfileData.parse_instagram_json(data)
+        if feed_res.status_code == 200:
+            feed_data = feed_res.json()
+            if feed_data.get("user"):
+                return feed_data if return_raw else ProfileData.parse_instagram_json(feed_data)
+
+        return None
 
     def get_feed(self, username: str, max_id: str = "", return_raw: bool = False):
         url = f"https://www.instagram.com/api/v1/feed/user/{username}/username/"
