@@ -6,106 +6,117 @@ from pydantic import BaseModel, Field, HttpUrl
 
 
 class ProfileData(BaseModel):
-    """Modelo estruturado para informações completas do perfil."""
-
-    # Básico
     id: str
     username: str
-    full_name: Optional[str]
-    biography: Optional[str]
-    profile_pic_url: Optional[HttpUrl]
+    full_name: Optional[str] = None
+    biography: Optional[str] = None
+    profile_pic_url: Optional[HttpUrl] = None
 
-    # Status
-    is_private: bool
-    is_verified: bool
-    is_business_account: bool
-    is_professional_account: bool
+    is_private: bool = False
+    is_verified: bool = False
+    is_business_account: bool = False
+    is_professional_account: bool = False
 
-    # Métricas
-    follower_count: int
-    following_count: int
-    total_posts: int
-    highlight_reel_count: int
-    mutual_followers: int
+    follower_count: int = 0
+    following_count: int = 0
+    total_posts: int = 0
+    highlight_reel_count: int = 0
+    mutual_followers: int = 0
 
-    # Categoria
-    category_name: Optional[str]
-    business_category_name: Optional[str]
-    should_show_category: Optional[bool]
+    category_name: Optional[str] = None
+    business_category_name: Optional[str] = None
+    should_show_category: Optional[bool] = None
 
-    # Conteúdo
-    has_clips: Optional[bool]
-    has_guides: Optional[bool]
-    has_channel: Optional[bool]
+    has_clips: Optional[bool] = None
+    has_guides: Optional[bool] = None
+    has_channel: Optional[bool] = None
 
-    # Links
-    external_url: Optional[HttpUrl]
+    external_url: Optional[HttpUrl] = None
     bio_links: List[Dict[str, Any]] = []
 
-    # Localização (raw dict já parseado)
-    business_address: Optional[Dict[str, Any]]
+    business_address: Optional[Dict[str, Any]] = None
 
-    # Contatos
-    should_show_public_contacts: Optional[bool]
-    business_email: Optional[str]
-    business_phone_number: Optional[str]
+    should_show_public_contacts: Optional[bool] = None
+    business_email: Optional[str] = None
+    business_phone_number: Optional[str] = None
 
     @classmethod
     def parse_instagram_json(cls, data: dict):
-        """Helper para limpar o aninhamento profundo do JSON original."""
-        user = data.get("data", {}).get("user", {})
-        if not user:
+        if not isinstance(data, dict):
             return None
 
-        # Parse do endereço comercial (string JSON → dict)
+        user = (
+            data.get("data", {}).get("user")
+            or data.get("data", {}).get("xdt_api__v1__profile_header")
+            or data.get("user")
+        )
+        if not isinstance(user, dict) or not user:
+            return None
+
         business_address_raw = user.get("business_address_json")
         parsed_address = None
         if business_address_raw:
-            try:
-                parsed_address = json.loads(business_address_raw)
-            except Exception:
-                parsed_address = None
+            if isinstance(business_address_raw, str):
+                try:
+                    parsed_address = json.loads(business_address_raw)
+                except Exception:
+                    parsed_address = None
+            elif isinstance(business_address_raw, dict):
+                parsed_address = business_address_raw
+
+        follower_count = (
+            user.get("edge_followed_by", {}).get("count")
+            if "edge_followed_by" in user
+            else user.get("follower_count", 0)
+        )
+        following_count = (
+            user.get("edge_follow", {}).get("count") if "edge_follow" in user else user.get("following_count", 0)
+        )
+        total_posts = (
+            user.get("edge_owner_to_timeline_media", {}).get("count")
+            if "edge_owner_to_timeline_media" in user
+            else user.get("media_count", 0)
+        )
+        mutual_followers = (
+            user.get("edge_mutual_followed_by", {}).get("count")
+            if "edge_mutual_followed_by" in user
+            else user.get("mutual_followers_count", 0)
+        )
+
+        profile_pic = user.get("profile_pic_url_hd") or user.get("profile_pic_url")
+        user_id = str(user.get("id") or user.get("pk") or "")
 
         return cls(
-            # Básico
-            id=user.get("id"),
-            username=user.get("username"),
+            id=user_id,
+            username=user.get("username", ""),
             full_name=user.get("full_name"),
             biography=user.get("biography"),
-            profile_pic_url=user.get("profile_pic_url_hd"),
-            # Status
+            profile_pic_url=profile_pic,
             is_private=user.get("is_private", False),
             is_verified=user.get("is_verified", False),
             is_business_account=user.get("is_business_account", False),
             is_professional_account=user.get("is_professional_account", False),
-            # Métricas
-            follower_count=user.get("edge_followed_by", {}).get("count", 0),
-            following_count=user.get("edge_follow", {}).get("count", 0),
-            total_posts=user.get("edge_owner_to_timeline_media", {}).get("count", 0),
+            follower_count=follower_count or 0,
+            following_count=following_count or 0,
+            total_posts=total_posts or 0,
             highlight_reel_count=user.get("highlight_reel_count", 0),
-            mutual_followers=user.get("edge_mutual_followed_by", {}).get("count", 0),
-            # Categoria
-            category_name=user.get("category_name"),
+            mutual_followers=mutual_followers or 0,
+            category_name=user.get("category_name") or user.get("category"),
             business_category_name=user.get("business_category_name"),
             should_show_category=user.get("should_show_category"),
-            # Conteúdo
             has_clips=user.get("has_clips"),
             has_guides=user.get("has_guides"),
             has_channel=user.get("has_channel"),
-            # Links
             external_url=user.get("external_url"),
             bio_links=user.get("bio_links", []),
-            # Localização
             business_address=parsed_address,
-            # Contatos
             should_show_public_contacts=user.get("should_show_public_contacts"),
-            business_email=user.get("business_email"),
-            business_phone_number=user.get("business_phone_number"),
+            business_email=user.get("public_email") or user.get("business_email"),
+            business_phone_number=user.get("public_phone_number") or user.get("business_phone_number"),
         )
 
 
 class FeedData(BaseModel):
-    # Dados do Post
     post_id: Optional[str] = Field(default=None, alias="id")
     pk: Optional[str] = None
     shortcode: Optional[str] = Field(default=None, alias="code")
@@ -118,7 +129,6 @@ class FeedData(BaseModel):
     view_count: Optional[int] = None
     carousel_media_count: Optional[int] = 0
 
-    # Dados do Feed
     posts: Optional[List["FeedData"]] = None
     next_max_id: Optional[str] = None
     num_results: Optional[int] = None
@@ -150,7 +160,6 @@ class FeedData(BaseModel):
 
 
 class CommentsData(BaseModel):
-    # Dados do Comentário
     comment_id: Optional[str] = Field(default=None, alias="pk")
     media_id: Optional[str] = None
     text: Optional[str] = None
@@ -161,7 +170,6 @@ class CommentsData(BaseModel):
     is_ranked_comment: Optional[bool] = None
     is_edited: Optional[bool] = None
 
-    # Dados do Autor
     user_id: Optional[str] = None
     username: Optional[str] = None
     full_name: Optional[str] = None
@@ -169,7 +177,6 @@ class CommentsData(BaseModel):
     is_private: Optional[bool] = None
     is_verified: Optional[bool] = None
 
-    # Dados da Listagem
     comments: Optional[List["CommentsData"]] = None
     next_max_id: Optional[str] = None
     num_results: Optional[int] = None

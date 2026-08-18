@@ -13,9 +13,10 @@ class InstagramSession:
 
         self.default_headers = {
             "x-ig-app-id": self.xigappid,
+            "x-csrftoken": csrftoken,
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
             "accept": "*/*",
-            "accept-language": "en-US,en;q=0.9",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
         }
         self.session.headers.update(self.default_headers)
 
@@ -23,10 +24,8 @@ class InstagramSession:
             self.session.proxies = {"http": proxy, "https": proxy}
 
     def get_cookie_string(self):
-        """Retorna os cookies formatados para o cabeçalho do CURL."""
         c = self.session.cookies.get_dict()
         return "; ".join([f"{k}={v}" for k, v in c.items()])
 
     def request_on_session(self, method, url, **kwargs):
-        """Método para requisições via Requests (Python)."""
         return self.session.request(method, url, timeout=10, **kwargs)
