@@ -1,2 +1,4 @@
-python3 -m build
-python3 -m twine upload dist/* --verbose
+rm -rf dist
+rm -rf igmapper.egg-info
+python -m build
+python -m twine upload dist/* --verbose
