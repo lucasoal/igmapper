@@ -1,4 +1,6 @@
 import json
+import random
+import string
 import subprocess
 import urllib.parse
 
@@ -57,11 +59,15 @@ class InstaClient:
     #         return e
 
     def _get_profile_id_anonymous(self, username: str = None) -> str:
+        random_csrftoken = "".join(
+            random.choice(string.ascii_letters + string.digits) for _ in range(32)
+        )
         # fmt:off
         command = [
             "curl", "--url", "https://www.instagram.com/ajax/bulk-route-definitions/",
             "-H", "accept: */*", "-H", "accept-language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7", "-H", "content-type: application/x-www-form-urlencoded",
-            "-b", "csrftoken=hWv1HUEXWJXrjQJ0Y3nI39; datr=H2ihap7UBS1zV2kDiVjHShzu; ig_did=18259CA3-CC0A-46AA-B15E-57D46B9065FB; mid=aqFoIAAEAAGyDFhRNqnbKpwaNnSJ; wd=1077x958",
+            # "-b", f"csrftoken=hWv1HUEXWJXrjQJ0Y3nI39; datr=H2ihap7UBS1zV2kDiVjHShzu; ig_did=18259CA3-CC0A-46AA-B15E-57D46B9065FB; mid=aqFoIAAEAAGyDFhRNqnbKpwaNnSJ; wd=1077x958",
+            "-b", f"csrftoken={random_csrftoken}; datr=H2ihap7UBS1zV2kDiVjHShzu; ig_did=18259CA3-CC0A-46AA-B15E-57D46B9065FB; mid=aqFoIAAEAAGyDFhRNqnbKpwaNnSJ; wd=1077x958",
             "-H", "origin: https://www.instagram.com", "-H", "priority: u=1, i", "-H", f"referer: https://www.instagram.com/{username}/", "-H", "sec-ch-prefers-color-scheme: dark",
             "-H", 'sec-ch-ua: "Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"',
             "-H", 'sec-ch-ua-full-version-list: "Not=A?Brand";v="99.0.0.0", "Google Chrome";v="151.0.7922.173", "Chromium";v="151.0.7922.173"',
@@ -99,7 +105,7 @@ class InstaClient:
             "__relay_internal__pv__PolarisShortDramaEnabledrelayprovider": False,
         }
         variables = urllib.parse.quote(json.dumps(vars_dict))
-        
+
         # fmt:off
         payload = f"av={self.state.av}&__d=www&__user=0&__a=1&__req=1&__hs=20703.HYP%3Ainstagram_web_pkg.2.1...0&dpr=1&__ccg=EXCELLENT&__rev=1046936532&__s=4jhz11%3Awaevfz%3A1snom8&__hsi=7682841949103505900&__dyn=7xe6E5q5U5ObxG4Vp41twpUnwgU7SbzEdF8vyUco38w5ux609vCwjE1EE2Cw8G11w6zx61vwoEcE2ygao38woE2swaO4U2zxe2GewGw9a361qw8W1uw2oEGdwtU662O0Lo6-3u2WErwfG1IwjU721IQp1yU426V8aUuwm8jw4kyVrx60hK3KaCwHwi84q2i0jK3mewkU&__csr=hD4MJkaNcRtOAOF5Aail_QX9QFLnIAEzhJuVESdbtrAQqrWjn8iml7m8JqAVKaxG7pozzebHSmT-iWKUXAgrz-V8Wiq9AKJaumWKmicULDCg_UhV9aK_xq7Aczo8ouy88UiKbGi2m3iFAFopwyxKdyECmdz8akuEgxqbwwy8OErxKdxe58bEK4UconzUyu00mxm4809oi3E0bOE0wVwEwEw1vq8wvA1cai8gKWm0jVwzz8Dw3g8x0wBw0UDw0hFm0fDwkUcUO0HQ0IEfk07GE&__hsdp=rNL6ygGpQDF5h4BY95BCVqmgW-QK9x6Fe8F7ggxe8zogKbg52FGF5uE8U2_w6kDU0qSg&__sjsp=rNL6ygGpQKh5h4BY95ze8mgVeQK9x6Fe8Kt124Uy2V0kaCGAlWwzw&__comet_req=7&fb_dtsg={self.state.fbdtsg}&jazoest=26033&lsd={self.state.lsd}&__spin_r=1046936532&__spin_b=trunk&__spin_t=1788801036&fb_api_caller_class=RelayModern&fb_api_req_friendly_name=PolarisProfilePageContentQuery&server_timestamps=true&variables={variables}&doc_id=28036671149327607"
         command = ["curl", "--url", "https://www.instagram.com/api/graphql", "-H", "accept: */*", "-H", "accept-language: pt-BR,pt;q=0.9,en-GB;q=0.8,en;q=0.7", "-H", "content-type: application/x-www-form-urlencoded", "-b", self.state.cookies, "-H", "origin: https://www.instagram.com", "-H", "priority: u=1, i", "-H", "referer: https://www.instagram.com/", "-H", "sec-ch-prefers-color-scheme: dark", "-H", 'sec-ch-ua: "Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"', "-H", 'sec-ch-ua-full-version-list: "Not=A?Brand";v="99.0.0.0", "Google Chrome";v="151.0.7922.173", "Chromium";v="151.0.7922.173"', "-H", "sec-fetch-dest: empty", "-H", "sec-fetch-mode: cors", "-H", "sec-fetch-site: same-origin", "-H", f"user-agent: {self.state.user_agent}", "-H", "x-asbd-id: 359341", "-H", f"x-csrftoken: {self.state.csrftoken}", "-H", "x-fb-friendly-name: PolarisProfilePageContentQuery", "-H", f"x-fb-lsd: {self.state.lsd}", "-H", "x-ig-app-id: 936619743392459", "-H", "x-ig-max-touch-points: 0", "--data-raw", payload]
