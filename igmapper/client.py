@@ -120,25 +120,46 @@ class InstaClient:
         except Exception as e:
             return e
 
-    def get_feed(self, username: str) -> dict:
-        vars_dict = {
-            "data": {
-                "count": 12,
-                "include_reel_media_seen_timestamp": True,
-                "include_relationship_info": True,
-                "latest_besties_reel_media": True,
-                "latest_reel_media": True,
-            },
-            "username": username,
-            "__relay_internal__pv__PolarisMultiCaptionCarouselEnabledrelayprovider": True,
-            "__relay_internal__pv__PolarisShortDramaEnabledrelayprovider": False,
-            "__relay_internal__pv__PolarisReelsRecoDebugOverlayEnabledrelayprovider": False,
+    def get_feed(self, username: str, after: str = None) -> dict:
+        data_payload = {
+            "count": 32,
+            "include_reel_media_seen_timestamp": True,
+            "include_relationship_info": True,
+            "latest_besties_reel_media": True,
+            "latest_reel_media": True,
         }
+
+        if after:
+            doc_id = "39535953862670189"
+            friendly_name = "PolarisProfilePostsTabContentQuery_connection"
+            vars_dict = {
+                "after": after,
+                "before": None,
+                "data": data_payload,
+                "first": 12,
+                "include_multi_captions": True,
+                "last": None,
+                "username": username,
+                "__relay_internal__pv__PolarisMultiCaptionCarouselEnabledrelayprovider": True,
+                "__relay_internal__pv__PolarisShortDramaEnabledrelayprovider": False,
+                "__relay_internal__pv__PolarisReelsRecoDebugOverlayEnabledrelayprovider": False,
+            }
+        else:
+            doc_id = "38154989454116081"
+            friendly_name = "PolarisProfilePostsQuery"
+            vars_dict = {
+                "data": data_payload,
+                "username": username,
+                "__relay_internal__pv__PolarisMultiCaptionCarouselEnabledrelayprovider": True,
+                "__relay_internal__pv__PolarisShortDramaEnabledrelayprovider": False,
+                "__relay_internal__pv__PolarisReelsRecoDebugOverlayEnabledrelayprovider": False,
+            }
+
         variables = urllib.parse.quote(json.dumps(vars_dict))
 
         # fmt:off
-        payload = f"av={self.state.av}&__d=www&__user=0&__a=1&__req=6&__hs=20703.HYP%3Ainstagram_web_pkg.2.1...0&dpr=1&__ccg=EXCELLENT&__rev=1046936532&__s=4jhz11%3Awaevfz%3A1snom8&__hsi=7682841949103505900&__dyn=7xe6E5q5U5ObxG4Vp41twpUnwgU7SbzEdF8vyUco38w5ux609vCwjE1EE2Cw8G11w6zx61vwoEcE2ygao38woE2swaO4U2zxe2GewGw9a361qw8W1uw2oEGdwtU662O0Lo6-3u2WErwfG1IwjU721IQp1yU426V8aUuwm8jw4kyVrx60hK3KaCwHwi84q2i0jK3mewkU&__csr=hD4MJkaNcRtOAOF5Aail_QX9QFLnIAEzhJuVESdbtrAQqrWjn8iml7m8JqAVKaxG7pozzebHSmT-iWKUXAgrz-V8Wiq9AKJaumWKmicULDCg_UhV9aK_xq7Aczo8ouy88UiKbGi2m3iFAFopwyxKdyECmdz8akuEgxqbwwy8OErxKdxe58bEK4UconzUyu00mxm4809oi3E0bOE0wVwEwEw1vq8wvA1cai8gKWm0jVwzz8Dw3g8x0wBw0UDw0hFm0fDwkUcUO0HQ0IEfk07GE&__hsdp=rNL6ygGpQDF5h4BY95BCVqmgW-QK9x6Fe8F7ggxe8zogKbg52FGF5uE8U2_w6kDU0qSg&__sjsp=rNL6ygGpQKh5h4BY95ze8mgVeQK9x6Fe8Kt124Uy2V0kaCGAlWwzw&__comet_req=7&fb_dtsg={self.state.fbdtsg}&jazoest=26033&lsd={self.state.lsd}&__spin_r=1046936532&__spin_b=trunk&__spin_t=1788801036&fb_api_caller_class=RelayModern&fb_api_req_friendly_name=PolarisProfilePostsQuery&server_timestamps=true&variables={variables}&doc_id=38154989454116081"
-        command = ["curl", "--url", "https://www.instagram.com/graphql/query", "-H", "accept: */*", "-H", "accept-language: pt-BR,pt;q=0.9,en-GB;q=0.8,en;q=0.7", "-H", "content-type: application/x-www-form-urlencoded", "-b", self.state.cookies, "-H", "origin: https://www.instagram.com", "-H", "priority: u=1, i", "-H", f"referer: https://www.instagram.com/{username}/", "-H", "sec-ch-prefers-color-scheme: dark", "-H", 'sec-ch-ua: "Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"', "-H", 'sec-ch-ua-full-version-list: "Not=A?Brand";v="99.0.0.0", "Google Chrome";v="151.0.7922.173", "Chromium";v="151.0.7922.173"', "-H", "sec-fetch-dest: empty", "-H", "sec-fetch-mode: cors", "-H", "sec-fetch-site: same-origin", "-H", f"user-agent: {self.state.user_agent}", "-H", "x-asbd-id: 359341", "-H", "x-bloks-version-id: 394436feebb82fbc8bf09459d29e98a4182d7d9f4f36777d8278b409536b0803", "-H", f"x-csrftoken: {self.state.csrftoken}", "-H", "x-fb-friendly-name: PolarisProfilePostsQuery", "-H", f"x-fb-lsd: {self.state.lsd}", "-H", "x-ig-app-id: 936619743392459", "-H", "x-ig-max-touch-points: 0", "-H", "x-root-field-name: xdt_api__v1__feed__user_timeline_graphql_connection", "--data-raw", payload]
+        payload = f"av={self.state.av}&__d=www&__user=0&__a=1&__req=p&__hs=20705.HYP%3Ainstagram_web_pkg.2.1...0&dpr=1&__ccg=EXCELLENT&__rev=1047087785&__s=bvefq6%3A27wtxx%3A3we0wk&__hsi=7683573197772336830&__dyn=7xeUjG1mxu1syaxG4Vp41twpUnwgU7SbzEdF8vyUco2qwJyEiw50x609vCwjE1EEc87m0yE462mcw5Mx62G5UswoEcE7O2l0Fwqo5W1yw9O1lwxwQzXwae4UaEW2G0AEco5G0zK5o4q0HU1wEbUGdwtUeo9UaQ0Lo6-bwHwKG6Ufk0zU8oC1IwjUpwlAcwBwUQp1yU426V8aUuwm8jxK0-8KmUhw4rwXyFEaVE4616wAwj83KwRyrg5e&__csr=hA8gP1xMEOP8lNdqh1pRpQBZ7XLfeiGpfmBCtQIAJTV5QihpaHGVt9k9Apy9HXSyoSKaiylh4yaGWKgxjFZIy_Q_5qriTsBqb8AGeiy4OnUy8CmXhDzaFpGiKjVWjGAp4QbCGul9x2l5AALwFh9YwugOaxh5zrzVpo99GGQmeCUhGfJKqK4WUjAxirQ8zFGGmiVArCzeUPzkUycG5ECbxyilu9xt3VHU8poLKuFFAbAw0BeCw6UwkE2xwsUW01-Sw0dgO5Ugw2gE0HhG58980YQE0_Z3o40yxh00yVwR4UB2Xc0hK8yU20yEO8w2bE0BC0n62C7k22vAxR8QwS0JF44k4qChGw1rCi1Xo06RC02pmU4e0c4wtk0bRw6Aw2g8&__hsdp=g9Y7JkMnmx_oVWt5fEj4dOGgMrBmAAkFAfQAlFR1JzKUu88afzF8iwXGcUsgg819w851-U6dyeV8Obzt1xswKcBG48fU2AUa8Ki32U3cxK7Uaoco4OEiAwsoqwRx6u1PzUhwzwSw-xBa12wjU11u08Ew8C0Do0i-w_w5Jw1kC0aewqo8U2fCO0FwiU0Lm320hGE6K0ot054w2jo0Pi2q0x838lU7C0FFk&__hblp=1C6EhwnEeo98jwgFFHzECaqgC11wh8PzGLwyhVV5z89p9-i364bwd62KFK4peVk8GdQczEXUGmEgCUdEkDxO4U4iaBm2yVV9A5UgK19xG6EO3-6Uiz8at0Kwjaxai1fwxxG4U8qy9pU6WQm9x62eUcEfk7k3u9wjawYwSwSwmK0Sku0km0yo521cw4iyU4q320y83pw74w_wpE6m1WwBw3Ro1sU18U660L84K3m3eu6UvBwqpIwG5VFE4i1EwNwLw2aEc82DwsGz85ym0ot0em1uw2jo38g2owhK0W84S10x22q3e1gw9y2ZnwsFE2CBg&__sjsp=g9Y6kllc9MRq7Z3S8hjW4N3sGAc6VlF968p3Z95qpMixW0FU&__comet_req=7&fb_dtsg={self.state.fbdtsg}&jazoest=26543&lsd={self.state.lsd}&__spin_r=1047087785&__spin_b=trunk&__spin_t=1788971293&__crn=comet.igweb.PolarisProfilePostsTabRoute&fb_api_caller_class=RelayModern&fb_api_req_friendly_name={friendly_name}&server_timestamps=true&variables={variables}&doc_id={doc_id}"
+        command = ["curl", "--url", "https://www.instagram.com/graphql/query", "-H", "accept: */*", "-H", "accept-language: pt-BR,pt;q=0.9,en-GB;q=0.8,en;q=0.7", "-H", "content-type: application/x-www-form-urlencoded", "-b", self.state.cookies, "-H", "origin: https://www.instagram.com", "-H", "priority: u=1, i", "-H", f"referer: https://www.instagram.com/{username}/", "-H", "sec-ch-prefers-color-scheme: dark", "-H", 'sec-ch-ua: "Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"', "-H", 'sec-ch-ua-full-version-list: "Not=A?Brand";v="99.0.0.0", "Google Chrome";v="151.0.7922.173", "Chromium";v="151.0.7922.173"', "-H", "sec-fetch-dest: empty", "-H", "sec-fetch-mode: cors", "-H", "sec-fetch-site: same-origin", "-H", f"user-agent: {self.state.user_agent}", "-H", "x-asbd-id: 359341", "-H", "x-bloks-version-id: 394436feebb82fbc8bf09459d29e98a4182d7d9f4f36777d8278b409536b0803", "-H", f"x-csrftoken: {self.state.csrftoken}", "-H", f"x-fb-friendly-name: {friendly_name}", "-H", f"x-fb-lsd: {self.state.lsd}", "-H", "x-ig-app-id: 936619743392459", "-H", "x-ig-max-touch-points: 0", "-H", "x-root-field-name: xdt_api__v1__feed__user_timeline_graphql_connection", "--data-raw", payload]
         # fmt:on
 
         if self.state.proxy:
